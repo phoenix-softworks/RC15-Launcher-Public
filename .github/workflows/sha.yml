@@ -1,0 +1,26 @@
+name: Update SHA with Latest Hash
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      # Runs a single command using the runners shell
+      - name: update file and push to remote
+        run: |
+          sha256sum ./RC15_Launcher.exe > LAUNCHER-SHA.txt
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Update SHAs txt"
+          git push
